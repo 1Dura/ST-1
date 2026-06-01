@@ -1,3 +1,4 @@
+// Copyright 2025 UNN-CS
 #include <gtest/gtest.h>
 
 #include "alg.h"
@@ -55,7 +56,7 @@ TEST(NextPrime, DoesNotReturnInputItself) {
 }
 
 TEST(NextPrime, SkipsCompositeRun) {
-  EXPECT_EQ(101U, nextPrime(90));
+  EXPECT_EQ(97U, nextPrime(90));
 }
 
 TEST(SumPrime, EmptyRangesHaveZeroSum) {

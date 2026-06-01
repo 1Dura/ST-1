@@ -1,3 +1,4 @@
+// Copyright 2025 UNN-CS
 #include "alg.h"
 
 #include <limits>
@@ -51,7 +52,7 @@ uint64_t nextPrime(uint64_t value) {
   }
 
   uint64_t candidate = value + 1;
-  if (candidate > 2 && candidate % 2 == 0) {
+  if (candidate % 2 == 0) {
     ++candidate;
   }
 
