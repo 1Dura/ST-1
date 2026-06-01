@@ -1,16 +1,28 @@
-// Copyright 2025 UNN-CS
-#include <cstdint>
 #include "alg.h"
 
+#include <limits>
+
+namespace {
+
+bool divisibleBySmallPrime(uint64_t value) {
+  return value % 2 == 0 || value % 3 == 0;
+}
+
+}  // namespace
+
 bool checkPrime(uint64_t value) {
-  if (value <= 1)
+  if (value < 2) {
     return false;
-  if (value <= 3)
+  }
+  if (value == 2 || value == 3) {
     return true;
-  if (value % 2 == 0 || value % 3 == 0)
+  }
+  if (divisibleBySmallPrime(value)) {
     return false;
-  for (uint64_t k = 5; (k * k) <= value; k = (k + 6)) {
-    if (value % k == 0 || value % (k + 2) == 0) {
+  }
+
+  for (uint64_t divisor = 5; divisor <= value / divisor; divisor += 6) {
+    if (value % divisor == 0 || value % (divisor + 2) == 0) {
       return false;
     }
   }
@@ -18,35 +30,43 @@ bool checkPrime(uint64_t value) {
 }
 
 uint64_t nPrime(uint64_t n) {
-  if (n == 0)
+  if (n == 0) {
     return 0;
-  uint64_t cnt = 0;
-  uint64_t curr = 1;
-  while (cnt < n) {
-    curr++;
-    if (checkPrime(curr)) {
-      cnt++;
+  }
+
+  uint64_t found = 0;
+  uint64_t candidate = 1;
+  while (found < n && candidate < std::numeric_limits<uint64_t>::max()) {
+    ++candidate;
+    if (checkPrime(candidate)) {
+      ++found;
     }
   }
-  return curr;
+  return candidate;
 }
 
 uint64_t nextPrime(uint64_t value) {
-  if (value < 2)
+  if (value < 2) {
     return 2;
+  }
 
-  do {
-    value++;
-  } while (!checkPrime(value));
+  uint64_t candidate = value + 1;
+  if (candidate > 2 && candidate % 2 == 0) {
+    ++candidate;
+  }
 
-  return value;
+  while (!checkPrime(candidate)) {
+    candidate += 2;
+  }
+  return candidate;
 }
 
 uint64_t sumPrime(uint64_t hbound) {
-  uint64_t sum = 0;
-  for (uint64_t i = 2; i < hbound; i++) {
-    if (checkPrime(i))
-      sum += i;
+  uint64_t result = 0;
+  for (uint64_t value = 2; value < hbound; ++value) {
+    if (checkPrime(value)) {
+      result += value;
+    }
   }
-  return sum;
+  return result;
 }
